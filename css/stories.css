@@ -39,9 +39,6 @@
 }
 
 .favorites-checkbox {
-  /* cursor: pointer;
-  outline: none;
-  border-radius: 50%; */
   width: 1em;
   height: 1em;
   background-color: white;
@@ -57,8 +54,12 @@
   background-color: #ff6600;
 }
 
-ul {
+#all-my-stories-list, #all-favorites-list {
   list-style-type: none;
+}
+
+#all-my-stories-list span {
+  cursor: pointer;
 }
 
 .trash {

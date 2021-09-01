@@ -81,7 +81,6 @@ function populatemyStories() {
   $allMyStories.empty();
 
   const myStories = currentUser.ownStories;
-  const $trash = $(".trash");
 
   if(!myStories) {
     $allMyStories.html("<p>You have no stories! Click submit to add a story.</p>");
@@ -89,13 +88,17 @@ function populatemyStories() {
     for(let story of myStories) {
       const $story = generateStoryMarkup(story);
       $allMyStories.append($story);
-      $trash.removeClass("trash");
     }
+    const $trash = $(".trash");
+    $trash.removeClass("trash");
   }
   $allMyStories.show();
 }
 
-function removeAStory() {
-
+function removeAStory(evt) {
+  evt.target.parentElement.remove();
 }
 
+$allMyStories.on('click', 'span', removeAStory);
+
+//TO-DO: delete story from API

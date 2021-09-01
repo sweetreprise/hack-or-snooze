@@ -226,23 +226,12 @@ class User {
     });
   }
 
-  // saveFavoritesToLocalStorage() {
-  //   const favorites = this.favorites;
-
-  //   if(this.favorites.length > 0) {
-  //     localStorage.setItem('favorites', JSON.stringify(favorites));
-  //   }
-  // }
-
-  // getFavoritesfromLocalStorage() {
-  //   const favorites = JSON.parse(localStorage.getItem('favorites'));
-  //   if(!favorites) return false;
-  // }
-
 }
 
 //if checked, push to favorites array (using storyID)
 //save favorites array to localstorage
 //when favorites tab is clicked, get favorites from local storage
 //if unchecked in favorites tab, remove from UI and update localstorage
+
+
 
