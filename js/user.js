@@ -115,15 +115,15 @@ function updateUIOnUserLogin() {
   updateNavOnLogin();
 }
 
-function saveFavoritesToLocalStorage() {
-  const favorites = this.favorites;
+// function saveFavoritesToLocalStorage() {
+//   const favorites = this.favorites;
 
-  if(this.favorites.length > 0) {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }
-}
+//   if(this.favorites.length > 0) {
+//     localStorage.setItem('favorites', JSON.stringify(favorites));
+//   }
+// }
 
-function getFavoritesfromLocalStorage() {
-  const favorites = JSON.parse(localStorage.getItem('favorites'));
-  if(!favorites) return false;
-}
+// function getFavoritesfromLocalStorage() {
+//   const favorites = JSON.parse(localStorage.getItem('favorites'));
+//   if(!favorites) return false;
+// }

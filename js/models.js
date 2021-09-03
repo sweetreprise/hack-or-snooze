@@ -82,6 +82,23 @@ class StoryList {
     const story = new Story(response.data.story);
     return story;
   }
+
+  /** Removes user's story from API */
+
+  async removeAStoryFromAPI(storyId) {
+    await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      data: { token: currentUser.loginToken }
+    });
+
+    //Removes story from main page
+    this.stories = this.stories.filter(s => s.storyId !== storyId);
+
+    //Removes story from favourites and ownStories array
+    currentUser.ownStories = currentUser.ownStories.filter(s => s.storyId !== storyId);
+    currentUser.favorites = currentUser.favorites.filter(s => s.storyId !== storyId);
+  }
 }
 
 
@@ -200,32 +217,33 @@ class User {
     }
   }
 
+  // Adds favorite, sends POST request
   async addFavorite(story) {
     this.favorites.push(story);
-    await this.addStoryRequest(story);
+    await this.updateFavoritesInAPI('add', story);
   }
 
+  // Removes favorite, sends DELETE request
   async removeFavorite(story) {
     this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
-    await this.removeStoryRequest(story);
+    await this.updateFavoritesInAPI('remove', story);
   }
 
-  async addStoryRequest(story) {
+  // Adds or removes a story based on the request type
+  async updateFavoritesInAPI(requestType, story) {
+    const method = requestType === 'add' ? 'POST' : 'DELETE';
+
     await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
-      method: "POST",
+      method: method,
       data: { token: currentUser.loginToken }
     });
   }
 
-  async removeStoryRequest(story) {
-    await axios({
-      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
-      method: "DELETE",
-      data: { token: currentUser.loginToken }
-    });
+  // Determines if a story is favorite using the story's id
+  isFavorite(story) {
+    return this.favorites.some(s => (s.storyId === story.storyId));
   }
-
 }
 
 //if checked, push to favorites array (using storyID)

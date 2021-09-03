@@ -38,31 +38,23 @@
   display: block;
 }
 
-.favorites-checkbox {
-  width: 1em;
-  height: 1em;
-  background-color: white;
-  border-radius: 50%;
-  vertical-align: middle;
-  border: 1px solid #ddd;
-  appearance: none;
-  outline: none;
+.favorites-heart {
   cursor: pointer;
-}
-
-.favorites-checkbox:checked {
-  background-color: #ff6600;
 }
 
 #all-my-stories-list, #all-favorites-list {
   list-style-type: none;
 }
 
+.favorite::before {
+  content: '♥';
+}
+
+.non-favorite::before {
+  content: '♡';
+}
 #all-my-stories-list span {
   cursor: pointer;
 }
 
-.trash {
-  display: none;
-}
 

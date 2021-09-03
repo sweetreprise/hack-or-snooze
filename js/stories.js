@@ -23,10 +23,13 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  const showHeart = Boolean(currentUser);
+
+
   return $(`
       <li id="${story.storyId}">
-        <span class="trash">&#128465;</span>
-        <input type="checkbox" class="favorites-checkbox">
+        <span class="trash hidden">&#128465;</span>
+        ${showHeart ? getHeartHTML(story, currentUser) : ''}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -65,40 +68,95 @@ async function submitNewStory(evt) {
   const $story = generateStoryMarkup(newStory);
   $allStoriesList.prepend($story);
   
-  $storyForm.val('');
-  $storyForm.fadeOut(500, () => $storyForm.hide());
+  $("#story-author, #story-title, #story-url").val('');
+
+  $storyForm.fadeOut(500, () => {
+    $storyForm.hide();
+    getAndShowStoriesOnStart();
+  });
 }
 
 $storyForm.on("submit", submitNewStory);
 
 /** Display favorites on page */
-function populateFavorites() {
 
+function populateFavorites() {
+  $allFavoritesList.empty();
+  hidePageComponents();
+
+  const myFavorites = currentUser.favorites;
+
+  if(myFavorites.length === 0) {
+    $allFavoritesList.html('You have no favorites! Click the &#9825; next to a story to add one to your favorites!');
+  } else for(let story of myFavorites) {
+    const $story = generateStoryMarkup(story);
+    $allFavoritesList.append($story);
+  }
+  $allFavoritesList.show();
 }
 
+/** Displays correct heart HTML */
+
+function getHeartHTML(story, currentUser) {
+  const isFavorite = currentUser.isFavorite(story);
+  const heartType = isFavorite ? "favorite" : 'non-favorite';
+
+  return `<span class="${heartType} heart"></span>`
+}
+
+// Handles when user clicks on the heart
+async function handleHeartClick() {
+  const $storyId = $(this).parent().attr('id');
+  const $story = storyList.stories.find(s => s.storyId === $storyId);
+
+
+  if($(this).hasClass('favorite')) {
+    await currentUser.removeFavorite($story);
+    $(this).toggleClass('favorite non-favorite');
+  } else {
+    await currentUser.addFavorite($story);
+    $(this).toggleClass('favorite non-favorite');
+  }
+}
+
+$allStoriesList.on('click', '.heart', handleHeartClick);
+$allFavoritesList.on('click', '.heart', handleHeartClick);
+$allMyStoriesList.on('click', '.heart', handleHeartClick);
+
+
 /** Display my stories on page */
-function populatemyStories() {
-  $allMyStories.empty();
+
+function populateMyStories() {
+  $allMyStoriesList.empty();
+  hidePageComponents();
 
   const myStories = currentUser.ownStories;
 
-  if(!myStories) {
-    $allMyStories.html("<p>You have no stories! Click submit to add a story.</p>");
+  if(myStories.length === 0) {
+    $allMyStoriesList.html("<p>You have no stories! Click submit to add a story.</p>");
   } else {
     for(let story of myStories) {
       const $story = generateStoryMarkup(story);
-      $allMyStories.append($story);
+      $allMyStoriesList.append($story);
     }
-    const $trash = $(".trash");
-    $trash.removeClass("trash");
+    const $trash = $(".hidden");
+    $trash.removeClass("hidden");
   }
-  $allMyStories.show();
+  $allMyStoriesList.show();
 }
 
-function removeAStory(evt) {
+//** Removes user's story from UI */
+
+async function removeAStoryFromUI(evt) {
+  const storyId = evt.target.parentElement.id
+
+  await storyList.removeAStoryFromAPI(storyId);
   evt.target.parentElement.remove();
 }
 
-$allMyStories.on('click', 'span', removeAStory);
+$allMyStoriesList.on('click', '.trash', removeAStoryFromUI);
 
-//TO-DO: delete story from API
+// if heart is clicked, switch hearts symbol, call API to post
+// when favorites is clicked, populate favorites
+
+// if heart is UN-FAVORITED, switch hearts symbol, call aPI to delete

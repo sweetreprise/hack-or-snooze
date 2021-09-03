@@ -38,6 +38,7 @@ function updateNavOnLogin() {
 /** Show new story form when user clicks on "submit" */
 
 function submitStoryClick() {
+  hidePageComponents();
   $storyForm.show();
   $allStoriesList.before($storyForm);
 }
@@ -48,14 +49,17 @@ $navStory.on('click', submitStoryClick);
 
 function showFavoritesClick() {
   hidePageComponents();
+  populateFavorites();
   $allFavoritesList.show();
 }
 
 $navFavorites.on('click', showFavoritesClick);
 
+/** Shows user's stories when user clicks on 'my stories' */
+
 function showMyStoriesClick() {
   hidePageComponents();
-  populatemyStories();
+  populateMyStories();
 }
 
 $navMyStories.on('click', showMyStoriesClick);
