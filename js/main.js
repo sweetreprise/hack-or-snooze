@@ -29,7 +29,7 @@ const $favoritesCheckbox = $("input[type='checkbox']");
  */
 
 function hidePageComponents() {
-  const components = [
+ const components = [
     $allStoriesList,
     $allFavoritesList,
     $allMyStoriesList,

@@ -246,10 +246,5 @@ class User {
   }
 }
 
-//if checked, push to favorites array (using storyID)
-//save favorites array to localstorage
-//when favorites tab is clicked, get favorites from local storage
-//if unchecked in favorites tab, remove from UI and update localstorage
-
 
 

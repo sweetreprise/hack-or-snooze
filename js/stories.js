@@ -156,7 +156,7 @@ async function removeAStoryFromUI(evt) {
 
 $allMyStoriesList.on('click', '.trash', removeAStoryFromUI);
 
-// if heart is clicked, switch hearts symbol, call API to post
-// when favorites is clicked, populate favorites
 
-// if heart is UN-FAVORITED, switch hearts symbol, call aPI to delete
+// TO-DO
+// populate my stories without refresh after submitting a story
+//
