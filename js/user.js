@@ -33,11 +33,6 @@ async function login(evt) {
   $loginForm.trigger("reset");
 }
 
-// function onFulfilled(val) {
-//   saveUserCredentialsInLocalStorage();
-//   updateUIOnUserLogin();
-// }
-
 $loginForm.on("submit", login);
 
 /** Handle signup form submission. */
@@ -122,7 +117,7 @@ function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
 
   hidePageComponents();
-  $allStoriesList.show();
+  putStoriesOnPage();
   $navStory.removeClass('hidden');
   $navFavorites.removeClass('hidden');
   $navMyStories.removeClass('hidden');
