@@ -19,13 +19,24 @@ async function login(evt) {
 
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
-  currentUser = await User.login(username, password);
+  try {
+    currentUser = await User.login(username, password);
+    saveUserCredentialsInLocalStorage();
+    updateUIOnUserLogin();
+  } catch(error) {
+    if(error.response.status === 401) {
+      alert('Invalid username/password :( Please try again');
+      evt.preventDefault();
+    }
+  }
 
   $loginForm.trigger("reset");
-
-  saveUserCredentialsInLocalStorage();
-  updateUIOnUserLogin();
 }
+
+// function onFulfilled(val) {
+//   saveUserCredentialsInLocalStorage();
+//   updateUIOnUserLogin();
+// }
 
 $loginForm.on("submit", login);
 
@@ -112,19 +123,9 @@ function updateUIOnUserLogin() {
 
   hidePageComponents();
   $allStoriesList.show();
+  $navStory.removeClass('hidden');
+  $navFavorites.removeClass('hidden');
+  $navMyStories.removeClass('hidden');
 
   updateNavOnLogin();
 }
-
-// function saveFavoritesToLocalStorage() {
-//   const favorites = this.favorites;
-
-//   if(this.favorites.length > 0) {
-//     localStorage.setItem('favorites', JSON.stringify(favorites));
-//   }
-// }
-
-// function getFavoritesfromLocalStorage() {
-//   const favorites = JSON.parse(localStorage.getItem('favorites'));
-//   if(!favorites) return false;
-// }

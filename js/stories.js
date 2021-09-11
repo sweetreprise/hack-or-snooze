@@ -65,14 +65,19 @@ async function submitNewStory(evt) {
   const url = $("#story-url").val();
   
   const newStory = await storyList.addStory(currentUser, { title, author, url });
+
+  //pushes new story to current user's own stories
+  currentUser.ownStories.push(newStory);
+  //generates markup for newStory and apprens to the main story list
   const $story = generateStoryMarkup(newStory);
   $allStoriesList.prepend($story);
   
   $("#story-author, #story-title, #story-url").val('');
-
+  //hide's story form and alerts user of successful post
   $storyForm.fadeOut(500, () => {
     $storyForm.hide();
     getAndShowStoriesOnStart();
+    alert('Succes! Thank you for submitting a post!');
   });
 }
 
@@ -158,5 +163,4 @@ $allMyStoriesList.on('click', '.trash', removeAStoryFromUI);
 
 
 // TO-DO
-// populate my stories without refresh after submitting a story
-//
+// Alt text for screen readers

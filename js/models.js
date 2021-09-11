@@ -73,14 +73,20 @@ class StoryList {
    */
 
   async addStory(currentUser, { title, author, url }) {
-    const response = await axios({
-      url: `${BASE_URL}/stories`,
-      method: 'POST',
-      data: {token: currentUser.loginToken, story: { title, author, url }
-    }});
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/stories`,
+        method: 'POST',
+        data: {token: currentUser.loginToken, story: { title, author, url }
+      }});
 
-    const story = new Story(response.data.story);
-    return story;
+      const story = new Story(response.data.story);
+      return story;
+    } catch(error) {
+      if(error.response.status === 400) {
+        alert('Error 400: Please enter valid url (eg. http://www.google.com)');
+      }
+    }
   }
 
   /** Removes user's story from API */
