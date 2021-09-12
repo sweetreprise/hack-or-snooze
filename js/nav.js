@@ -39,6 +39,7 @@ function updateNavOnLogin() {
 
 function submitStoryClick() {
   hidePageComponents();
+  $("#story-author, #story-title, #story-url").val('');
   $storyForm.show();
   $allStoriesList.before($storyForm);
 }
