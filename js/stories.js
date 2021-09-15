@@ -23,13 +23,13 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
-  const showHeart = Boolean(currentUser);
+  const showStar = Boolean(currentUser);
 
 
   return $(`
       <li id="${story.storyId}">
         <span class="trash hidden">&#128465;</span>
-        ${showHeart ? getHeartHTML(story, currentUser) : ''}
+        ${showStar? getStarHTML(story, currentUser) : ''}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -100,17 +100,17 @@ function populateFavorites() {
   $allFavoritesList.show();
 }
 
-/** Displays correct heart HTML */
+/** Displays correct star HTML */
 
-function getHeartHTML(story, currentUser) {
+function getStarHTML(story, currentUser) {
   const isFavorite = currentUser.isFavorite(story);
-  const heartType = isFavorite ? "favorite" : 'non-favorite';
+  const starType = isFavorite ? "favorite" : 'non-favorite';
 
-  return `<span class="${heartType} heart"></span>`
+  return `<span alt="star-to-favorite" class="${starType} star"></span>`
 }
 
-// Handles when user clicks on the heart
-async function handleHeartClick() {
+// Handles when user clicks on the star
+async function handleStarClick() {
   const $storyId = $(this).parent().attr('id');
   const $story = storyList.stories.find(s => s.storyId === $storyId);
 
@@ -124,9 +124,9 @@ async function handleHeartClick() {
   }
 }
 
-$allStoriesList.on('click', '.heart', handleHeartClick);
-$allFavoritesList.on('click', '.heart', handleHeartClick);
-$allMyStoriesList.on('click', '.heart', handleHeartClick);
+$allStoriesList.on('click', '.star', handleStarClick);
+$allFavoritesList.on('click', '.star', handleStarClick);
+$allMyStoriesList.on('click', '.star', handleStarClick);
 
 
 /** Display my stories on page */
@@ -160,7 +160,3 @@ async function removeAStoryFromUI(evt) {
 }
 
 $allMyStoriesList.on('click', '.trash', removeAStoryFromUI);
-
-
-// TO-DO
-// Alt text for screen readers

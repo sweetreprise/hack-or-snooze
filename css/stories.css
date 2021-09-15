@@ -38,7 +38,7 @@
   display: block;
 }
 
-.favorites-heart {
+.favorites-star {
   cursor: pointer;
 }
 
@@ -47,11 +47,11 @@
 }
 
 .favorite::before {
-  content: '♥';
+  content: '★';
 }
 
 .non-favorite::before {
-  content: '♡';
+  content: '☆';
 }
 #all-my-stories-list span {
   cursor: pointer;
