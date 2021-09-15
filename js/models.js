@@ -83,8 +83,9 @@ class StoryList {
       const story = new Story(response.data.story);
       return story;
     } catch(error) {
-      if(error.response.status === 400) {
+        if(error.response.status === 400) {
         alert('Error 400: Please enter valid url (eg. http://www.google.com)');
+        throw new Error('Error');
       }
     }
   }
